@@ -1,0 +1,68 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Sử dụng 100vh để chiều cao luôn chiếm toàn bộ màn hình */
+  width: 100%;
+  background: linear-gradient(to right, #43e97b, #38f9d7); /* Màu nền xanh lá dịu */
+}
+
+.login-card {
+  width: 400px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  background-color: white; /* Màu nền khác với màu nền trang */
+  border-radius: 10px; /* Bo góc cho thẻ */
+  text-align: center; /* Căn giữa nội dung bên trong */
+}
+
+h2 {
+  margin-bottom: 20px; /* Tạo khoảng cách giữa tiêu đề và form */
+  color: #2c3e50; /* Màu chữ của tiêu đề */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Tạo khoảng cách giữa các trường */
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.form-control {
+  width: 100%; /* Đảm bảo rằng các trường chiếm toàn bộ chiều rộng của thẻ chứa */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px; /* Bo góc cho input */
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #43e97b; /* Màu xanh lá dịu */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+}
+
+button:hover {
+  background-color: #38f9d7; /* Màu khi hover */
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}

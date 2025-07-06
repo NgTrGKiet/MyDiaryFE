@@ -1,0 +1,23 @@
+input.ng-invalid.ng-touched {
+    border: 1px solid red
+}
+textarea.ng-invalid.ng-touched{
+    border: 1px solid red
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.help-block {
+    color: red;
+    font-size: 0.875em;
+}
+
+button.btn-primary {
+    margin-top: 15px;
+}
+
