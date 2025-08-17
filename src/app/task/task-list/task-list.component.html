@@ -25,7 +25,7 @@
                     <p class="card-text"><strong>Create:</strong> {{ item.createdTime }}</p>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-danger" (click)="deleteTask(item.diaryId)">Delete</button>
-                        <button class="btn btn-primary" [routerLink]="['/task/', item.diaryId]">Detail</button>
+                        <button class="btn btn-primary" [routerLink]="['/diary/', item.diaryId]">Detail</button>
                     </div>
                 </div>
             </div>
