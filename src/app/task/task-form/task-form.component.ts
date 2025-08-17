@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TaskComponent } from '../task.component';
-import { TaskService } from '../../service/task.service';
+import { DiaryService } from '../../service/diary.service';
 import { APIResponse } from '../../models/APIResponse';
 import { UserTask } from '../../models/UserTask';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -19,7 +19,7 @@ export class TaskFormComponent {
   taskForm: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private taskService: TaskService, private toast: ToastrService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private diaryService: DiaryService, private toast: ToastrService) { }
 
   ngOnInit(): void {
     this.taskForm = new FormGroup({
@@ -35,7 +35,7 @@ export class TaskFormComponent {
     if (id) {
       id = +id;
       this.isEditMode = true;
-      this.taskService.getTask(id).subscribe((response: APIResponse) => {
+      this.diaryService.getDiary(id).subscribe((response: APIResponse) => {
         if (response) {
           console.log(response);
           this.taskForm.patchValue(response.result)
@@ -46,8 +46,8 @@ export class TaskFormComponent {
 
   private handleTaskOperation(task: UserTask, id: number): void {
     const operation = this.isEditMode
-      ? this.taskService.updateTask(id, task)
-      : this.taskService.createTask(task);
+      ? this.diaryService.updateDiary(id, task)
+      : this.diaryService.createDiary(task);
 
     operation.subscribe(
       () => {

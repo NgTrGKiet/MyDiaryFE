@@ -1,5 +1,5 @@
 <div class="task-container">
-    <div class="search-bar mb-4">
+    <!-- <div class="search-bar mb-4">
         <input type="text" class="form-control mb-2" placeholder="Search by title" [(ngModel)]="searchTitle">
         <select class="form-control mb-2" [(ngModel)]="searchStatus">
             <option value="">All Statuses</option>
@@ -14,20 +14,18 @@
             <option value="Low">Low</option>
         </select>
         <button class="btn btn-primary w-100" (click)="applyFilter()">Apply Filter</button>
-    </div>
+    </div> -->
 
     <ng-container *ngIf="filteredTasks.length; else Nth">
         <div class="task-card" *ngFor="let item of filteredTasks">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <p class="card-text"><strong>Status:</strong> {{ item.status }}</p>
-                    <p class="card-text"><strong>Priority:</strong> {{ item.priority }}</p>
-                    <p class="card-text"><strong>Start:</strong> {{ item.start }}</p>
-                    <p class="card-text"><strong>End:</strong> {{ item.end }}</p>
+                    <h5 class="card-title">{{ item.diaryTitle }}</h5>
+                    <p class="card-text"><strong>Story:</strong> {{ item.diaryStory }}</p>
+                    <p class="card-text"><strong>Create:</strong> {{ item.createdTime }}</p>
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-danger" (click)="deleteTask(item.id)">Delete</button>
-                        <button class="btn btn-primary" [routerLink]="['/task/', item.id]">Detail</button>
+                        <button class="btn btn-danger" (click)="deleteTask(item.diaryId)">Delete</button>
+                        <button class="btn btn-primary" [routerLink]="['/task/', item.diaryId]">Detail</button>
                     </div>
                 </div>
             </div>
@@ -35,5 +33,5 @@
     </ng-container>
 </div>
 <ng-template #Nth>
-    <p>No reservation available.</p>
+    <p>No diary available.</p>
 </ng-template>

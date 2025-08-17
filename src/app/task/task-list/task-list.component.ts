@@ -5,7 +5,8 @@ import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/rou
 import { TaskComponent } from '../task.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserTask } from '../../models/UserTask';
-import { TaskService } from '../../service/task.service';
+import { DiaryService } from '../../service/diary.service';
+import { DiaryDtos } from '../../models/Diary';
 
 @Component({
   selector: 'app-task-list',
@@ -16,14 +17,14 @@ import { TaskService } from '../../service/task.service';
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
-  UserTask: UserTask[] = [];
-  filteredTasks: UserTask[] = [];
+  UserDiary: DiaryDtos[] = [];
+  filteredTasks: DiaryDtos[] = [];
 
   searchTitle: string = '';
   searchStatus: string = '';
   searchPriority: string = '';
 
-  constructor(private taskService: TaskService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private diaryService: DiaryService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.loadTasks();
@@ -31,30 +32,28 @@ export class TaskListComponent {
 
   applyFilter(): void {
     if (!this.searchTitle && !this.searchStatus && !this.searchPriority) {
-      this.filteredTasks = this.UserTask; // Nếu không có điều kiện tìm kiếm nào, hiển thị tất cả
+      this.filteredTasks = this.UserDiary; // Nếu không có điều kiện tìm kiếm nào, hiển thị tất cả
     } else {
-      this.filteredTasks = this.UserTask.filter(task => {
-        const matchesTitle = this.searchTitle ? task.title.toLowerCase().includes(this.searchTitle.toLowerCase()) : true;
-        const matchesStatus = this.searchStatus ? task.status === this.searchStatus : true;
-        const matchesPriority = this.searchPriority ? task.priority === this.searchPriority : true;
-        return matchesTitle && matchesStatus && matchesPriority;
+      this.filteredTasks = this.UserDiary.filter(diary => {
+        const matchesTitle = this.searchTitle ? diary.diaryTitle.toLowerCase().includes(this.searchTitle.toLowerCase()) : true;
+        const matchesStory = this.searchStatus ? diary.diaryStory === this.searchStatus : true;
+        return matchesTitle && matchesStory;
       });
     }
   }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe((response) => {
-      this.UserTask = response.result;
-      this.filteredTasks = response.result
+    this.diaryService.getDiaries().subscribe((response) => {
+      this.UserDiary = response.result.items;
+      this.filteredTasks = response.result.items
     }, (error) => {
       window.alert('Error fetching tasks: ' + error);
     });
   }
 
-  deleteTask(id: number): void {
+  deleteTask(id: string): void {
     if (window.confirm('Are you sure you want to delete this task?')) {
-      id = +id;
-      this.taskService.deleteTask(id).subscribe((data) => {
+      this.diaryService.deleteDiary(id).subscribe((data) => {
         console.log('Delete request got processed');
         this.loadTasks()
       }, (error) => {

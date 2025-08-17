@@ -12,7 +12,7 @@ export const routes: Routes = [
     },
     { path: 'register', component: RegisterComponent },
     {
-        path: 'task', canActivate: [AuthGuard], component: TaskComponent, children: [
+        path: 'diary', canActivate: [AuthGuard], component: TaskComponent, children: [
             { path: 'list', component: TaskListComponent },
             { path: 'new', component: TaskFormComponent },
             { path: ':id', component: TaskFormComponent }

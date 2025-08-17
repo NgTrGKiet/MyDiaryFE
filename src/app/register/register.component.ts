@@ -29,9 +29,9 @@ export class RegisterComponent {
   onSubmit(): void {
     console.log(this.registerForm.value);
     const user: User = {
-      UserName: this.registerForm.get('UserName')?.value,
-      Password: this.registerForm.get('Password')?.value,
-      Name: this.registerForm.get('Name')?.value
+      email: this.registerForm.get('UserName')?.value,
+      password: this.registerForm.get('Password')?.value,
+      name: this.registerForm.get('Name')?.value
     }
     this.authService.Register(user).subscribe((data) => {
       this.router.navigate(['']);

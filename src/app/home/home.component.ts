@@ -29,13 +29,12 @@ export class HomeComponent {
   }
 
   onSubmit(): void {
-    console.log(this.loginForm.value);
     const user: User = {
-      UserName: this.loginForm.get('UserName')?.value,
-      Password: this.loginForm.get('Password')?.value,
+      email: this.loginForm.get('UserName')?.value,
+      password: this.loginForm.get('Password')?.value,
     }
     this.authService.Login(user).subscribe((data) => {
-      this.router.navigate(['/task']);
+      this.router.navigate(['/diary']);
     },
       error => {
         window.alert('Login failed: ' + error);

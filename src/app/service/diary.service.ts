@@ -3,10 +3,11 @@ import { Injectable } from "@angular/core";
 import { UserTask } from "../models/UserTask";
 import { BehaviorSubject, Observable, catchError, map, throwError } from "rxjs";
 import { APIResponse } from "../models/APIResponse";
+import { DiaryDtos } from "../models/Diary";
 
 @Injectable({ providedIn: 'root' })
-export class TaskService {
-    private apiUrl = 'https://localhost:7137/api/usertask'
+export class DiaryService {
+    private apiUrl = 'https://localhost:7040/api/Diary'
 
     // private tasksSubject = new BehaviorSubject<UserTask[]>([]);
     // tasks$ = this.tasksSubject.asObservable();
@@ -15,12 +16,11 @@ export class TaskService {
 
     private UserTask: UserTask[] = [];
 
-    getTasks(): Observable<APIResponse> {
-        return this.http.get<APIResponse>(this.apiUrl + '/all-task').pipe(
+    getDiaries(): Observable<APIResponse> {
+        return this.http.get<APIResponse>(this.apiUrl + '/all-diaries?PageNumber=1&PageSize=1').pipe(
             map((response: APIResponse) => {
-                response.result.forEach((task: any) => {
-                    task.start = this.formatDate(task.start);
-                    task.end = this.formatDate(task.end);
+                response.result.items.forEach((diary: DiaryDtos) => {
+                    diary.createdTime = this.formatDate(diary.createdTime);
                 });
                 return response;
             }),
@@ -41,7 +41,7 @@ export class TaskService {
     //     this.loadTasks();
     // }
 
-    getTask(id: number): Observable<APIResponse> {
+    getDiary(id: number): Observable<APIResponse> {
         return this.http.get<APIResponse>(this.apiUrl + '/single-task/' + id).pipe(
             map((response: APIResponse) => {
                 response.result.start = this.formatDate(response.result.start);
@@ -54,11 +54,10 @@ export class TaskService {
         )
     }
 
-    createTask(usertask: UserTask): Observable<APIResponse> {
+    createDiary(usertask: UserTask): Observable<APIResponse> {
         return this.http.post<APIResponse>(this.apiUrl, usertask).pipe(
             map((response: APIResponse) => {
                 if (response.statusCode === 400) {
-                    console.log(response.errorMessages);
                 }
                 return response;
             }),
@@ -68,7 +67,7 @@ export class TaskService {
         )
     }
 
-    updateTask(id: number, usertask: UserTask): Observable<APIResponse> {
+    updateDiary(id: number, usertask: UserTask): Observable<APIResponse> {
         return this.http.put<APIResponse>(this.apiUrl + '/' + id, usertask).pipe(
             map((response: APIResponse) => {
                 return response;
@@ -80,7 +79,7 @@ export class TaskService {
         )
     }
 
-    deleteTask(id: number) {
+    deleteDiary(id: string) {
         return this.http.delete<APIResponse>(this.apiUrl + '/' + id).pipe(
             map((response: APIResponse) => {
                 return response;

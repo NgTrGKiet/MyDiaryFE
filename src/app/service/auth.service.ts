@@ -6,7 +6,7 @@ import { APIResponse } from "../models/APIResponse";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private apiUrl = 'https://localhost:7137/api/auth'
+    private apiUrl = 'https://localhost:7040/api/Auth'
 
     constructor(private http: HttpClient) { }
 
@@ -14,7 +14,6 @@ export class AuthService {
         return this.http.post<APIResponse>(this.apiUrl + '/login', user).pipe(
             tap(response => {
                 localStorage.setItem('token', response.result.accessToken)
-                console.log(response.result.accessToken)
             }),
             catchError((error: HttpErrorResponse) => {
                 return throwError(error.error.errorMessages)
