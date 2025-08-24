@@ -7,53 +7,76 @@ import { DiaryService } from '../../service/diary.service';
 import { APIResponse } from '../../models/APIResponse';
 import { UserTask } from '../../models/UserTask';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { CreateDiaryDtos } from '../../models/DiaryDto/CreateDiary';
+import { UpdateDiaryDtos } from '../../models/DiaryDto/UpdateDiary';
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterModule, TaskComponent, ToastrModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterModule, TaskComponent, ToastrModule, MatFormFieldModule, MatButtonModule, MatNativeDateModule, MatDatepickerModule, MatInputModule],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css'
 })
 export class TaskFormComponent {
-  taskForm: FormGroup = new FormGroup({});
+  diaryForm: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private diaryService: DiaryService, private toast: ToastrService) { }
 
   ngOnInit(): void {
-    this.taskForm = new FormGroup({
-      title: new FormControl(null, Validators.required),
-      content: new FormControl(null, Validators.required),
-      status: new FormControl(null, Validators.required),
-      priority: new FormControl(null, Validators.required),
-      start: new FormControl(null, Validators.required),
-      end: new FormControl(null, Validators.required),
+    this.diaryForm = new FormGroup({
+      diaryTitle: new FormControl(null, Validators.required),
+      diaryStory: new FormControl(null, Validators.required),
+      createdTime: new FormControl(null, Validators.required),
     })
 
     let id = this.route.snapshot.params['id'];
     if (id) {
-      id = +id;
       this.isEditMode = true;
       this.diaryService.getDiary(id).subscribe((response: APIResponse) => {
         if (response) {
-          console.log(response);
-          this.taskForm.patchValue(response.result)
+          this.diaryForm.patchValue(response.result)
         }
       })
     }
   }
 
-  private handleTaskOperation(task: UserTask, id: number): void {
-    const operation = this.isEditMode
-      ? this.diaryService.updateDiary(id, task)
-      : this.diaryService.createDiary(task);
+  public onSubmit() {
+    if (this.diaryForm.valid) {
+      if (window.confirm("Are you sure you want to proceed?")) {
+        let diary = this.diaryForm.value;
+        let id = this.route.snapshot.params['id'];
+        if (id) {
+          let updateDiary: UpdateDiaryDtos = {
+            diaryId: id,
+            diaryTitle: diary.diaryTitle,
+            diaryStory: diary.diaryStory
+          }
+          this.handleUpdateDiaryOperation(updateDiary);
+        } else {
+          let createDiary: CreateDiaryDtos = {
+            diaryStory: diary.diaryStory,
+            diaryTitle: diary.diaryTitle,
+            createdTime: diary.createdTime
+          }
+          this.handleCreateDiaryOperation(createDiary);
+        }
+      }
+    }
+  }
 
-    operation.subscribe(
+  private handleUpdateDiaryOperation(diary: UpdateDiaryDtos): void {
+    console.log(diary);
+    this.diaryService.updateDiary(diary).subscribe(
       () => {
         const message = this.isEditMode ? 'Task updated successfully' : 'Task created successfully';
         console.log(message);
-        this.router.navigate(['/task/list']);
+        this.router.navigate(['/diary/list']);
       },
       error => {
         const errorMessage = this.isEditMode ? 'Error updating task' : 'Error creating task';
@@ -62,16 +85,19 @@ export class TaskFormComponent {
     );
   }
 
-  onSubmit() {
-    if (this.taskForm.valid) {
-      if (window.confirm("Are you sure you want to proceed?")) {
-        let UserTask: UserTask = this.taskForm.value;
-        let id = this.route.snapshot.params['id'];
-        if (id) {
-          UserTask.id = id;
-        }
-        this.handleTaskOperation(UserTask, id)
+  private handleCreateDiaryOperation(diary: CreateDiaryDtos): void {
+    console.log(diary)
+
+    this.diaryService.createDiary(diary).subscribe(
+      () => {
+        const message = this.isEditMode ? 'Task updated successfully' : 'Task created successfully';
+        console.log(message);
+        this.router.navigate(['/diary/list']);
+      },
+      error => {
+        const errorMessage = this.isEditMode ? 'Error updating task' : 'Error creating task';
+        window.alert(`${errorMessage}: ${error}`);
       }
-    }
+    );
   }
 }

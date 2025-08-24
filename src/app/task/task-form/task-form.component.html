@@ -1,69 +1,43 @@
-<h3 class="mt-5 mb-3 text-center fw-bold">{{ isEditMode ? 'Details of task' : 'Add new task' }}</h3>
-<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+<h3 class="mt-5 mb-3 text-center fw-bold">{{ isEditMode ? 'Details of diary' : 'Add new diary' }}</h3>
+<form [formGroup]="diaryForm" (ngSubmit)="onSubmit()">
 
+    <!-- Title -->
     <div class="d-flex justify-content-center mb-3">
-        <div class="form-group w-50">
-            <label class="form-label fw-bold">Title:</label>
-            <input class="form-control" type="text" [formControlName]="'title'">
-            <span *ngIf="!taskForm.get('title')?.valid && taskForm.get('title')?.touched" class="help-block">
+        <mat-form-field class="w-50" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="diaryTitle" placeholder="Enter diary title">
+            <mat-error *ngIf="diaryForm.get('diaryTitle')?.hasError('required')">
                 * Please enter a title
-            </span>
-        </div>
+            </mat-error>
+        </mat-form-field>
     </div>
+    
+    <!-- Story -->
     <div class="d-flex justify-content-center mb-3">
-        <div class="form-group w-50">
-            <label class="form-label fw-bold">Content:</label>
-            <textarea class="form-control" rows="5" [formControlName]="'content'"></textarea>
-            <span *ngIf="!taskForm.get('content')?.valid && taskForm.get('content')?.touched" class="help-block">
-                * Please enter content
-            </span>
-        </div>
+        <mat-form-field class="w-50" appearance="outline">
+            <mat-label>Story</mat-label>
+            <textarea matInput formControlName="diaryStory" rows="5" placeholder="Write your diary..."></textarea>
+            <mat-error *ngIf="diaryForm.get('diaryStory')?.hasError('required')">
+                * Please enter a story
+            </mat-error>
+        </mat-form-field>
     </div>
-
-    <div class="row justify-content-center mb-3">
-        <div class="col-md-3 mb-3">
-            <label class="form-label fw-bold">Start:</label>
-            <input class="form-control" type="date" [formControlName]="'start'">
-            <span *ngIf="!taskForm.get('start')?.valid && taskForm.get('start')?.touched" class="help-block">
+    
+    <!-- Created Time -->
+    <div class="d-flex justify-content-center mb-3">
+        <mat-form-field class="w-50" appearance="outline">
+            <mat-label>Created Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="createdTime" [disabled]="isEditMode">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="diaryForm.get('createdTime')?.hasError('required')">
                 * Please choose a date
-            </span>
-        </div>
-        <div class="col-md-3 mb-3">
-            <label class="form-label fw-bold">End:</label>
-            <input class="form-control" type="date" [formControlName]="'end'">
-            <span *ngIf="!taskForm.get('end')?.valid && taskForm.get('end')?.touched" class="help-block">
-                * Please choose a date
-            </span>
-        </div>
-    </div>
-
-    <div class="row justify-content-center mb-3">
-        <div class="col-md-3 mb-3">
-            <label class="form-label fw-bold">Priority:</label>
-            <select class="form-control" [formControlName]="'priority'">
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-            </select>
-            <span *ngIf="!taskForm.get('priority')?.valid && taskForm.get('priority')?.touched" class="help-block">
-                * Please select a priority
-            </span>
-        </div>
-        <div class="col-md-3 mb-3">
-            <label class="form-label fw-bold">Status:</label>
-            <select class="form-control" [formControlName]="'status'">
-                <option value="Pending">Pending</option>
-                <option value="In Processing">In Processing</option>
-                <option value="Done">Done</option>
-            </select>
-            <span *ngIf="!taskForm.get('status')?.valid && taskForm.get('status')?.touched" class="help-block">
-                * Please select a status
-            </span>
-        </div>
+            </mat-error>
+        </mat-form-field>
     </div>
 
     <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary w-50" [disabled]="taskForm.invalid" type="submit">{{ isEditMode ? 'Update' :
+        <button class="btn btn-primary w-50" [disabled]="diaryForm.invalid" type="submit">{{ isEditMode ? 'Update' :
             'Submit'
             }}</button>
     </div>

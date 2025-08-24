@@ -6,7 +6,7 @@ import { TaskComponent } from '../task.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserTask } from '../../models/UserTask';
 import { DiaryService } from '../../service/diary.service';
-import { DiaryDtos } from '../../models/Diary';
+import { DiaryDtos } from '../../models/DiaryDto/Diary';
 
 @Component({
   selector: 'app-task-list',
@@ -54,7 +54,6 @@ export class TaskListComponent {
   deleteTask(id: string): void {
     if (window.confirm('Are you sure you want to delete this task?')) {
       this.diaryService.deleteDiary(id).subscribe((data) => {
-        console.log('Delete request got processed');
         this.loadTasks()
       }, (error) => {
         window.alert('Error deleting task: ' + error);

@@ -24,8 +24,8 @@
                     <p class="card-text"><strong>Story:</strong> {{ item.diaryStory }}</p>
                     <p class="card-text"><strong>Create:</strong> {{ item.createdTime }}</p>
                     <div class="d-flex justify-content-between">
-                        <button class="btn btn-danger" (click)="deleteTask(item.diaryId)">Delete</button>
                         <button class="btn btn-primary" [routerLink]="['/diary/', item.diaryId]">Detail</button>
+                        <button class="btn btn-danger" (click)="deleteTask(item.diaryId)">Delete</button>
                     </div>
                 </div>
             </div>
