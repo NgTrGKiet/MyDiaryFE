@@ -3,10 +3,11 @@ import { Injectable } from "@angular/core";
 import { User } from "../models/User";
 import { catchError, map, Observable, tap, throwError } from "rxjs";
 import { APIResponse } from "../models/APIResponse";
+import {API} from "./url/url";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private apiUrl = 'https://localhost:7040/api/Auth'
+    private apiUrl = API + 'Auth';
 
     constructor(private http: HttpClient) { }
 

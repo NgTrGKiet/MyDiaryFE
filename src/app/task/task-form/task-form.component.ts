@@ -30,9 +30,9 @@ export class TaskFormComponent {
 
   ngOnInit(): void {
     this.diaryForm = new FormGroup({
-      diaryTitle: new FormControl(null, Validators.required),
-      diaryStory: new FormControl(null, Validators.required),
-      createdTime: new FormControl(null, Validators.required),
+      diaryTitle: new FormControl(null),
+      diaryStory: new FormControl(null),
+      createdTime: new FormControl({ value: null, disabled: this.isEditMode }),
     })
 
     let id = this.route.snapshot.params['id'];
@@ -40,7 +40,16 @@ export class TaskFormComponent {
       this.isEditMode = true;
       this.diaryService.getDiary(id).subscribe((response: APIResponse) => {
         if (response) {
-          this.diaryForm.patchValue(response.result)
+          const diary = response.result;
+
+          if (diary.createdTime) {
+            const [day, month, year] = diary.createdTime.split('-').map(Number);
+            diary.createdTime = new Date(year, month - 1, day);
+          }
+
+          this.diaryForm.patchValue(diary)
+
+          this.diaryForm.get('createdTime')?.disable();
         }
       })
     }

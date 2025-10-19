@@ -6,10 +6,11 @@ import { APIResponse } from "../models/APIResponse";
 import { DiaryDtos } from "../models/DiaryDto/Diary";
 import { CreateDiaryDtos } from "../models/DiaryDto/CreateDiary";
 import { UpdateDiaryDtos } from "../models/DiaryDto/UpdateDiary";
+import { API } from "./url/url";
 
 @Injectable({ providedIn: 'root' })
 export class DiaryService {
-    private apiUrl = 'https://localhost:7040/api/Diary'
+    private apiUrl = API + 'Diary'
 
     // private tasksSubject = new BehaviorSubject<UserTask[]>([]);
     // tasks$ = this.tasksSubject.asObservable();
